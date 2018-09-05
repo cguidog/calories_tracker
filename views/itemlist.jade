@@ -1,0 +1,6 @@
+extends layout
+
+block content 
+  ul
+    each item, i in itemlist
+      li #{item.item} #{item.calories} #{item.quantity}

@@ -11,7 +11,8 @@ app.use(metOvrr("_method"));
 const itemSchema = new mongoose.Schema({
   item: String,
   calories: Number,
-  quantity: Number
+  quantity: Number,
+  date: String
 });
 
 const Item = mongoose.model('Item', itemSchema);
@@ -21,7 +22,7 @@ app.get('/', (req, res)=> {
   res.redirect('/item');
 });
 app.get('/item', (req, res)=> {
-  Item.find({}, (err, allItems)=>{
+  Item.find({date: {"$gte": new Date("2018-09-08"), "$lt": new Date("2018-09-10")}}, (err, allItems)=>{
     if (err) {
       console.log(err);
     } else {
@@ -34,7 +35,7 @@ app.get('/item', (req, res)=> {
   });
 });
 app.post('/item', (req, res)=> {
-Item.create({item: req.body.input, calories: req.body.calories, quantity: req.body.quantity}, (err, newItem)=>{
+Item.create({item: req.body.input, calories: req.body.calories, quantity: req.body.quantity, date: new Date()}, (err, newItem)=>{
   if (err) {
     console.log('Error:' + err);
     res.render('item');

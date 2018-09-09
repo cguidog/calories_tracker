@@ -1,0 +1,6 @@
+extends layout
+
+block content
+  form(action="/limit?_method=PUT", method='POST')
+    input(type="number" name="limit" placeholder="limit" value='#{limit.limit}')
+    button(type="submit") Submit

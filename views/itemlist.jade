@@ -1,6 +1,19 @@
+
+html(lang="en")
+  head
+    title= pageTitle
+    :javascript
+      | if (itemlist) {
+      |    return itemlist;
+      | }
+  body
+
+
 extends layout
 
 block content 
   ul
     each item, i in itemlist
       li #{item.item} #{item.calories} #{item.quantity}
+
+   p #{total}

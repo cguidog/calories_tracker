@@ -18,27 +18,18 @@ const Item = mongoose.model('Item', itemSchema);
 
 /* GET home page. */
 app.get('/', (req, res)=> {
-
+  res.redirect('/item');
 });
 app.get('/item', (req, res)=> {
-  MongoClient.connect(url, (err, database)=>{
-    if(err){
-      console.log('Unable to connect to server' + err);
+  Item.find({}, (err, allItems)=>{
+    if (err) {
+      console.log(err);
     } else {
-      console.log('Connection Established');
-      const db = database.db('calorie_tracker');
-      db.collection('items').find({}).toArray((err, result)=>{
-        if (err){
-          res.send(err);
-        } else if (result.length) {
-          res.render('itemlist', {
-            'itemlist': result
-          })
-        } else {
-          res.send('No documents found');
-        }
-        database.close();
-      });
+      var total = 0;
+      allItems.forEach((item)=>{
+        total = total + item.calories;
+      })
+      res.render('itemlist', {'itemlist': allItems, 'total': total});
     }
   });
 });

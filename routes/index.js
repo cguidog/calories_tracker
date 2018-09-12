@@ -22,6 +22,7 @@ const Limit = mongoose.model('Limit', limitSchema);
 var limit = Limit.find({}, (err, allLimit)=>{
   allLimit.forEach((item)=>{
   limit = item.limit;
+  limitId= item.id;
   })
 })
 /* GET home page. */
@@ -44,7 +45,7 @@ app.get('/item', (req, res)=> {
 
         console.log(limit);
       })
-      res.render('itemlist', {'itemlist': allItems, 'total': total, 'limit': limit});
+      res.render('itemlist', {'itemlist': allItems, total, limit, limitId});
     }
   });
 });
@@ -76,8 +77,8 @@ app.post('/limit', (req, res)=> {
     }
   });
   });
-  app.get('/limit/edit', (req, res)=>{
-    Limit.findById('5b952b524ef09a03c61f91b8', (err, showLimit)=>{
+  app.get('/limit/:id/edit', (req, res)=>{
+    Limit.findById(limitId, (err, showLimit)=>{
     if (err){
       res.redirect('/item');
     } else {
@@ -86,7 +87,7 @@ app.post('/limit', (req, res)=> {
     });
     });
     app.put('/limit', (req, res)=>{
-      Limit.findByIdAndUpdate("5b952b524ef09a03c61f91b8", {limit: req.body.limit}, (err, UpdtLimit)=>{
+      Limit.findByIdAndUpdate(limitId, {limit: req.body.limit}, (err, UpdtLimit)=>{
         if (err) {
           res.redirect('/limit');
         } else {

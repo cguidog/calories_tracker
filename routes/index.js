@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+const moment = require('moment');
 const metOvrr = require("method-override");
 const url = 'mongodb://localhost:27017/calorie_tracker';
 
@@ -30,7 +31,7 @@ app.get('/', (req, res)=> {
   res.redirect('/item');
 });
 app.get('/item', (req, res)=> {
-  Item.find({date: {"$gte": new Date("Sat Sep 09 2018 00:00:00 GMT-0400 (EDT)"), "$lt": new Date("2018-09-10")}}, (err, allItems)=>{
+  Item.find({date: {"$gte": moment().startOf('day'), "$lt": moment().endOf('day')}}, (err, allItems)=>{
     if (err) {
       console.log(err);
     } else {

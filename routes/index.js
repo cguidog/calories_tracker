@@ -64,6 +64,38 @@ Item.create({item: req.body.input, calories: req.body.calories, quantity: req.bo
 app.get('/item/new', (req, res)=>{
   res.render('new');
 });
+
+app.get('/item/:id/edit', (req, res)=>{
+  Item.findById(req.params.id, (err, showItem)=>{
+  if (err){
+    res.redirect('/item');
+  } else {
+    res.render('edititem', {item: showItem});
+  }
+  });
+  });
+
+  app.put('/item/:id', (req, res)=>{
+    Item.findByIdAndUpdate(req.params.id, {item: req.body.input, calories: req.body.calories, quantity: req.body.quantity}, (err, UpdtItem)=>{
+      if (err) {
+        res.redirect('/item/' + req.params.id + '/edit');
+      } else {
+        res.redirect('/item');
+      }
+    });
+    });
+app.delete('/item/:id', (req, res)=>{
+  Item.findByIdAndRemove(req.params.id, (err)=>{
+    if (err) {
+      res.redirect('/item');
+      console.log(err)
+    } else {
+      res.redirect('/item');
+    }
+  });
+  });
+
+
 app.get('/limit', (req, res)=>{
   res.render('limit');
 });
@@ -78,6 +110,7 @@ app.post('/limit', (req, res)=> {
     }
   });
   });
+
   app.get('/limit/:id/edit', (req, res)=>{
     Limit.findById(limitId, (err, showLimit)=>{
     if (err){

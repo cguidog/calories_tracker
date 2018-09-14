@@ -25,4 +25,9 @@ block content
   ul
     each item, i in itemlist
       li #{item.item}
+        form(action="/item/#{item._id}?_method=DELETE" method="POST")
+          button Delete
+        a(href='/item/#{item._id}/edit')
+          button Edit
+  
         p Calories: #{item.calories} Quantity: #{item.quantity}

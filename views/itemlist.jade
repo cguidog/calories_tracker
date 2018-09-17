@@ -12,6 +12,9 @@ html(lang="en")
 extends layout
 
 block content 
+  form(action="/limit?_method=PUT", method='POST')
+    input(type="number" name="limit" placeholder="limit" value='#{limit}')
+    button Update
 
   p Daily allowance: #{limit}
     a(href='/limit/#{limitId}/edit') CHANGE

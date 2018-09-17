@@ -42,9 +42,8 @@ app.get('/item', (req, res)=> {
       Limit.find({}, (err, allLimit)=>{
         allLimit.forEach((item)=>{
         limit = item.limit;
+      //  console.log(item.limit);
         })
-
-        console.log(limit);
       })
       res.render('itemlist', {'itemlist': allItems, total, limit, limitId});
     }
@@ -54,9 +53,9 @@ app.post('/item', (req, res)=> {
 Item.create({item: req.body.input, calories: req.body.calories, quantity: req.body.quantity, date: new Date()}, (err, newItem)=>{
   if (err) {
     console.log('Error:' + err);
-    res.render('item');
+    res.render('itemlist');
   } else {
-    res.redirect('/item');
+    res.redirect('/');
   }
 });
 });
@@ -122,10 +121,12 @@ app.post('/limit', (req, res)=> {
     });
     app.put('/limit', (req, res)=>{
       Limit.findByIdAndUpdate(limitId, {limit: req.body.limit}, (err, UpdtLimit)=>{
+        limit=UpdtLimit.limit;
         if (err) {
           res.redirect('/limit');
         } else {
-          res.redirect('/item');
+          console.log(limit)
+          res.redirect('/');
         }
       });
       });

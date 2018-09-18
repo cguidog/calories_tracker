@@ -11,6 +11,7 @@ const itemSchema = new mongoose.Schema({
   item: String,
   calories: Number,
   quantity: Number,
+  favorite: Boolean,
   date: String
 });
 
@@ -50,7 +51,7 @@ app.get('/item', (req, res)=> {
   });
 });
 app.post('/item', (req, res)=> {
-Item.create({item: req.body.input, calories: req.body.calories, quantity: req.body.quantity, date: new Date()}, (err, newItem)=>{
+Item.create({item: req.body.input.toUpperCase(), calories: req.body.calories, quantity: req.body.quantity, favorite: req.body.favorite, date: new Date()}, (err, newItem)=>{
   if (err) {
     console.log('Error:' + err);
     res.render('itemlist');
@@ -98,6 +99,7 @@ app.delete('/item/:id', (req, res)=>{
 app.get('/limit', (req, res)=>{
   res.render('limit');
 });
+
 app.post('/limit', (req, res)=> {
   Limit.create({limit: req.body.limit}, (err, newItem)=>{
     if (err) {
@@ -110,24 +112,35 @@ app.post('/limit', (req, res)=> {
   });
   });
 
-  app.get('/limit/:id/edit', (req, res)=>{
-    Limit.findById(limitId, (err, showLimit)=>{
-    if (err){
-      res.redirect('/item');
+app.get('/limit/:id/edit', (req, res)=>{
+  Limit.findById(limitId, (err, showLimit)=>{
+  if (err){
+    res.redirect('/item');
+  } else {
+    res.render('editlimit', {limit: showLimit});
+  }
+  });
+});
+
+app.put('/limit', (req, res)=>{
+  Limit.findByIdAndUpdate(limitId, {limit: req.body.limit}, (err, UpdtLimit)=>{
+    limit=UpdtLimit.limit;
+      if (err) {
+        res.redirect('/limit');
+      } else {
+        console.log(limit)
+        res.redirect('/');
+      }
+    });
+});
+
+app.get('/favorites', (req, res)=>{
+  Item.find({favorite: true}, (err, allFavorites)=>{
+    if(err){
+      console.log(err);
     } else {
-      res.render('editlimit', {limit: showLimit});
+      res.render('favorites', {'favorites': allFavorites})
     }
-    });
-    });
-    app.put('/limit', (req, res)=>{
-      Limit.findByIdAndUpdate(limitId, {limit: req.body.limit}, (err, UpdtLimit)=>{
-        limit=UpdtLimit.limit;
-        if (err) {
-          res.redirect('/limit');
-        } else {
-          console.log(limit)
-          res.redirect('/');
-        }
-      });
-      });
+  });
+});
 module.exports = app;

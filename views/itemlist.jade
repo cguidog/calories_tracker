@@ -24,7 +24,8 @@ block content
   p Available balance: #{limit - total}
 
   p Today's detail 
-      a(href='/item/new') Add Item
+      a(href='/item/new') Add Item 
+      a(href='/favorites') Favorites
   ul
     each item, i in itemlist
       li #{item.item}

@@ -1,0 +1,8 @@
+extends layout
+
+block content
+    each favorite, i in favorites
+        li #{favorite.item}
+            p Calories: #{favorite.calories}
+
+    a(href='/item') Cancel

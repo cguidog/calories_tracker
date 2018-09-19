@@ -2,7 +2,13 @@ extends layout
 
 block content
     each favorite, i in favorites
-        li #{favorite.item}
-            p Calories: #{favorite.calories}
+        form(action="/item" name="addInput" method="POST")
+            input(type="text" name="input" placeholder="item" value='#{favorite.item}')
+            input(type="number" name="calories" placeholder="calories" value='#{favorite.calories}')
+            input(type="number" name="quantity" placeholder="quantity" value='#{favorite.quantity}')
+            button(type="submit") Submit
+        form(action='/favorites/#{favorite.id}?_method=PUT' method="POST")
+            button(type="submit") Delete
+
 
     a(href='/item') Cancel

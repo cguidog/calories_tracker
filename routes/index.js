@@ -76,7 +76,7 @@ app.get('/item/:id/edit', (req, res)=>{
   });
 
   app.put('/item/:id', (req, res)=>{
-    Item.findByIdAndUpdate(req.params.id, {item: req.body.input, calories: req.body.calories, quantity: req.body.quantity}, (err, UpdtItem)=>{
+    Item.findByIdAndUpdate(req.params.id, {item: req.body.input, calories: req.body.calories, quantity: req.body.quantity, favorite: req.body.favorite}, (err, UpdtItem)=>{
       if (err) {
         res.redirect('/item/' + req.params.id + '/edit');
       } else {
@@ -142,5 +142,15 @@ app.get('/favorites', (req, res)=>{
       res.render('favorites', {'favorites': allFavorites})
     }
   });
+});
+
+app.put('/favorites/:id', (req, res)=>{
+Item.findByIdAndUpdate(req.params.id, {favorite: false}, (err)=>{
+if(err){
+  console.log(err);
+} else {
+  res.redirect('/favorites')
+}
+});
 });
 module.exports = app;

@@ -51,7 +51,11 @@ app.get('/item', (req, res)=> {
   });
 });
 app.post('/item', (req, res)=> {
-Item.create({item: req.body.input.toUpperCase(), calories: req.body.calories, quantity: req.body.quantity, favorite: req.body.favorite, date: new Date()}, (err, newItem)=>{
+Item.create({item: req.body.input.toUpperCase(),
+            calories: req.body.calories,
+            quantity: req.body.quantity,
+            favorite: req.body.favorite,
+            date: new Date()}, (err, newItem)=>{
   if (err) {
     console.log('Error:' + err);
     res.render('itemlist');
@@ -76,7 +80,10 @@ app.get('/item/:id/edit', (req, res)=>{
   });
 
   app.put('/item/:id', (req, res)=>{
-    Item.findByIdAndUpdate(req.params.id, {item: req.body.input, calories: req.body.calories, quantity: req.body.quantity, favorite: req.body.favorite}, (err, UpdtItem)=>{
+    Item.findByIdAndUpdate(req.params.id, {item: req.body.input,
+                                          calories: req.body.calories,
+                                          quantity: req.body.quantity,
+                                          favorite: req.body.favorite}, (err, UpdtItem)=>{
       if (err) {
         res.redirect('/item/' + req.params.id + '/edit');
       } else {

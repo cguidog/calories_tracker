@@ -1,8 +1,16 @@
 body {
+  background: red;
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
   color: #00B7FF;
+}
+
+.field {
+  text-align: center;
+  border: none;
+  border-bottom: 0.5rem solid white;
+  background: red;
 }

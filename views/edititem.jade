@@ -5,8 +5,8 @@ block content
     input(type="text" name="input" placeholder="item" value='#{item.item}')
     input(type="number" name="calories" placeholder="calories" value='#{item.calories}')
     input(type="number" name="quantity" placeholder="quantity" value='#{item.quantity}')
-    label(for="favorite") Favorite? '#{item.favorite}'
-    input(id="favorite" type="checkbox" name="favorite" value='#{item.favorite}' checked='#{item.favorite}')
+    label(for="favorite") Favorite?
+    input(id="favorite" type="checkbox" name="favorite" value='true' checked=item.favorite)
     button(type="submit") Submit
-  
+
   a(href='/item') Cancel

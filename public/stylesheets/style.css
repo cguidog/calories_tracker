@@ -1,5 +1,13 @@
+:root {
+  --main-bg-color: rgb(245, 245, 245);
+  --text-color: rgb(77, 78, 133);
+  --shadow-color: #222;
+  --input-text-size: 2rem;
+  --border-width: 0.2rem
+}
+
 body {
-  background: red;
+  background: var(--main-bg-color);
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
@@ -9,8 +17,103 @@ a {
 }
 
 .field {
+  font-size: var(--input-text-size);
   text-align: center;
+  color: var(--text-color);
   border: none;
-  border-bottom: 0.5rem solid white;
-  background: red;
+  margin-bottom: 2rem;
+  border-bottom: 0.2rem solid var(--text-color);
+  -webkit-box-shadow: 0 4px 6px -6px var(--shadow-color);
+  -moz-box-shadow: 0 4px 6px -6px var(--shadow-color);
+  box-shadow: 0 4px 6px -6px var(--shadow-color);
+  background: var(--main-bg-color);
+  width: 70%;
+}
+.favorite{
+  font-size: var(--input-text-size);
+  color: var(--text-color)
+}
+.container {
+  display: block;
+  position: relative;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  align-content: center;
+  text-align: center;
+  margin: auto;
+}
+
+/* Hide the browser's default checkbox */
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  height: 50px;
+  width: 50px;
+  background-color: rgb(214, 214, 214);
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+  background-color: rgb(126, 125, 125);
+}
+
+/* When the checkbox is checked, add a blue background */
+.container input:checked ~ .checkmark {
+  background-color: var(--text-color);
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.container .checkmark:after {
+  left: 45%;
+  top: 30%;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+.form {
+  margin: auto;
+  text-align: center;
+  align-content: center;
+}
+
+::placeholder {
+  color: var(--text-color);
+  opacity: 0.5; 
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+ color: var(--text-color);
+ opacity: 0.5;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+ color: var(--text-color);
+ opacity: 0.5;
 }

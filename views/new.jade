@@ -1,12 +1,19 @@
 extends layout
 
 block content
-  form(action="/item" name="addInput" method="POST")
-    input(class="field" type="text" name="input" placeholder="item")
-    input(type="number" name="calories" placeholder="calories")
-    input(type="number" name="quantity" placeholder="quantity")
-    label(for="favorite") Favorite?
-    input(id="favorite" type="checkbox" name="favorite" value='true')
-    button(type="submit") Submit
+  div(class="form")
+    form( action="/item" name="addInput" method="POST")
+      input(class="field" type="text" name="input" placeholder="ITEM")
+      br
+      input(class="field" type="number" name="calories" placeholder="CALORIES")
+      br
+      input(class="field" type="number" name="quantity" placeholder="QUANTITY")
+      br
+      label(class="container" for="favorite") FAVORITE?
+        br
+        input(id="favorite" type="checkbox" name="favorite" value='true')
+        span(class="checkmark")
+      br
+      button(type="submit") Submit
 
   a(href='/item') Cancel

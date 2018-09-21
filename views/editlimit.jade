@@ -1,8 +1,9 @@
 extends layout
 
 block content
-  form(action="/limit?_method=PUT", method='POST')
-    input(type="number" name="limit" placeholder="limit" value='#{limit.limit}')
+  form(class="form" action="/limit?_method=PUT", method='POST')
+    input(class="field" type="number" name="limit" placeholder="limit" value='#{limit.limit}')
+    br
     button(type="submit") Submit
 
   a(href='/item') Cancel

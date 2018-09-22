@@ -11,6 +11,7 @@ const itemSchema = new mongoose.Schema({
   item: String,
   calories: Number,
   quantity: Number,
+  unit: String,
   favorite: Boolean,
   date: String
 });
@@ -43,7 +44,7 @@ app.get('/item', (req, res)=> {
       Limit.find({}, (err, allLimit)=>{
         allLimit.forEach((item)=>{
         limit = item.limit;
-      //  console.log(item.limit);
+      console.log('New limit: '+ limit);
         })
       })
       res.render('itemlist', {'itemlist': allItems, total, limit, limitId});
@@ -54,6 +55,7 @@ app.post('/item', (req, res)=> {
 Item.create({item: req.body.input.toUpperCase(),
             calories: req.body.calories,
             quantity: req.body.quantity,
+            unit: req.body.unit,
             favorite: req.body.favorite,
             date: new Date()}, (err, newItem)=>{
   if (err) {
@@ -83,6 +85,7 @@ app.get('/item/:id/edit', (req, res)=>{
     Item.findByIdAndUpdate(req.params.id, {item: req.body.input,
                                           calories: req.body.calories,
                                           quantity: req.body.quantity,
+                                          unit: req.body.unit,
                                           favorite: req.body.favorite}, (err, UpdtItem)=>{
       if (err) {
         res.redirect('/item/' + req.params.id + '/edit');
@@ -111,7 +114,6 @@ app.post('/limit', (req, res)=> {
   Limit.create({limit: req.body.limit}, (err, newItem)=>{
     if (err) {
       console.log('Error:' + err);
-      res.render('limit');
     } else {
       limit = '';
       res.redirect('/item');
@@ -131,11 +133,10 @@ app.get('/limit/:id/edit', (req, res)=>{
 
 app.put('/limit', (req, res)=>{
   Limit.findByIdAndUpdate(limitId, {limit: req.body.limit}, (err, UpdtLimit)=>{
-    limit=UpdtLimit.limit;
       if (err) {
         res.redirect('/limit');
       } else {
-        console.log(limit)
+        limit = req.body.limit;
         res.redirect('/');
       }
     });

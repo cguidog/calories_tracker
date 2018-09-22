@@ -9,11 +9,17 @@ block content
       br
       input(class="field" type="number" name="quantity" placeholder="QUANTITY")
       br
+      select(class="select" name="unit")
+        option(value="Unit") Unit
+        option(value="tsp") tsp
+        option(value="Tbsp") Tbsp
+        option(value="Cup") Cup
+      br
       label(class="container" for="favorite") FAVORITE?
         br
         input(id="favorite" type="checkbox" name="favorite" value='true')
         span(class="checkmark")
       br
-      button(type="submit") Submit
-
-  a(href='/item') Cancel
+      button(class="button" type="submit") Submit
+      a(href='/item')
+        button(class="button") Cancel

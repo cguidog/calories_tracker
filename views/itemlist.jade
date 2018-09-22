@@ -1,33 +1,36 @@
-
+<!DOCTYPE html>
 html(lang="en")
   head
-    title= 'Calorie Tracker'
-  body
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    meta(http-equiv="X-UA-Compatible", content="ie=edge")
+    link(rel="stylesheet", href="stylesheets/style.css")
+    link(href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css", rel="stylesheet", integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO", crossorigin="anonymous")
+    link(rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous")
+    title Calorie Tracker
 
+  block content
+    div(class="form" class="item")
+      p() Daily Goal
+        form(action="/limit?_method=PUT", method='POST')
+          input(class="field" type="number" name="limit" placeholder="limit" value='#{limit}')
 
-extends layout
+      p Today's calories: #{total}
 
-block content 
-  form(action="/limit?_method=PUT", method='POST')
-    input(type="number" name="limit" placeholder="limit" value='#{limit}')
-    button Update
+      p Balance #{limit - total} calories
 
-  p Daily allowance: #{limit}
-    a(href='/limit/#{limitId}/edit') CHANGE
-
-  p Consumed today: #{total}
-
-  p Available balance: #{limit - total}
-
-  p Today's detail 
-      a(href='/item/new') Add Item 
-      a(href='/favorites') Favorites
-  ul
-    each item, i in itemlist
-      li #{item.item}
-        form(action="/item/#{item._id}?_method=DELETE" method="POST")
-          button Delete
-        a(href='/item/#{item._id}/edit')
-          button Edit
-  
-        p Calories: #{item.calories} Quantity: #{item.quantity}
+      p(class=title) Detail  
+        a(href='/item/new')
+          button(class="button")
+            i(class="fas fa-plus")
+        a(href='/favorites')
+          button(class="button")
+            i(class="fas fa-heart")
+      ul
+        each item, i in itemlist
+          li(class="item") #{item.item}
+            p Calories: #{item.calories} Quantity: #{item.quantity} #{item.unit}
+            form(action="/item/#{item._id}?_method=DELETE" method="POST")
+              button Delete
+            a(href='/item/#{item._id}/edit')
+              button Edit

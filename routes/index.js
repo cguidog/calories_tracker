@@ -6,12 +6,7 @@ const metOvrr = require("method-override");
 const url = 'mongodb://localhost:27017/calorie_tracker';
 const firebase = require('firebase');
 const firebaseRun = firebase.initializeApp({
-    apiKey: "AIzaSyAjhl4aMSuS7iWtpITSfdYPmNEC_c1OwwE",
-    authDomain: "calorietracker-327ce.firebaseapp.com",
-    databaseURL: "https://calorietracker-327ce.firebaseio.com",
-    projectId: "calorietracker-327ce",
-    storageBucket: "calorietracker-327ce.appspot.com",
-    messagingSenderId: "798786154180"
+
 });
 
 mongoose.connect(url);

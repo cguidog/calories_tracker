@@ -8,6 +8,19 @@ html(lang="en")
     link(href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css", rel="stylesheet", integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO", crossorigin="anonymous")
     link(rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous")
     title Calorie Tracker
+    script(src='https://www.gstatic.com/firebasejs/5.5.1/firebase.js')
+    script.
+      // Initialize Firebase
+      var config = {
+      apiKey: "AIzaSyAjhl4aMSuS7iWtpITSfdYPmNEC_c1OwwE",
+      authDomain: "calorietracker-327ce.firebaseapp.com",
+      databaseURL: "https://calorietracker-327ce.firebaseio.com",
+      projectId: "calorietracker-327ce",
+      storageBucket: "calorietracker-327ce.appspot.com",
+      messagingSenderId: "798786154180"
+      };
+      firebase.initializeApp(config);
+
 
   block content
     div(class="form" class="item")

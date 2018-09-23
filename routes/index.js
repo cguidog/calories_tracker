@@ -4,6 +4,15 @@ const mongoose = require('mongoose');
 const moment = require('moment');
 const metOvrr = require("method-override");
 const url = 'mongodb://localhost:27017/calorie_tracker';
+const firebase = require('firebase');
+const firebaseRun = firebase.initializeApp({
+    apiKey: "AIzaSyAjhl4aMSuS7iWtpITSfdYPmNEC_c1OwwE",
+    authDomain: "calorietracker-327ce.firebaseapp.com",
+    databaseURL: "https://calorietracker-327ce.firebaseio.com",
+    projectId: "calorietracker-327ce",
+    storageBucket: "calorietracker-327ce.appspot.com",
+    messagingSenderId: "798786154180"
+});
 
 mongoose.connect(url);
 app.use(metOvrr("_method"));
@@ -30,8 +39,25 @@ var limit = Limit.find({}, (err, allLimit)=>{
 })
 /* GET home page. */
 app.get('/', (req, res)=> {
-  res.redirect('/item');
+  res.render('index');
 });
+
+app.post('/', (req, res)=>{
+  const email  = req.body.email;
+  const password = req.body.password;
+  const auth = firebase.auth();
+  const promise = auth.createUserWithEmailAndPassword(email, password);
+  promise.catch(e => console.log(e.message));
+  firebase.auth().onAuthStateChanged(firebaseUser => {
+    if (firebaseUser){
+      console.log(firebaseUser);
+    } else {
+      console.log('not log in');
+    }
+  })
+  res.render('itemlist');
+});
+
 app.get('/item', (req, res)=> {
   Item.find({date: {"$gte": moment().startOf('day'), "$lt": moment().endOf('day')}}, (err, allItems)=>{
     if (err) {
@@ -60,7 +86,7 @@ Item.create({item: req.body.input.toUpperCase(),
             date: new Date()}, (err, newItem)=>{
   if (err) {
     console.log('Error:' + err);
-    res.render('itemlist');
+    res.redirect('/item');
   } else {
     res.redirect('/');
   }

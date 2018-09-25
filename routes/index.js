@@ -5,9 +5,8 @@ const moment = require('moment');
 const metOvrr = require("method-override");
 const url = 'mongodb://localhost:27017/calorie_tracker';
 const firebase = require('firebase');
-const firebaseRun = firebase.initializeApp({
-
-});
+//import {firebaseRun} from "../api";
+const firebaseRun = require('../api');
 
 mongoose.connect(url);
 app.use(metOvrr("_method"));
@@ -50,7 +49,23 @@ app.post('/', (req, res)=>{
       console.log('not log in');
     }
   })
-  res.render('itemlist');
+  Item.find({date: {"$gte": moment().startOf('day'), "$lt": moment().endOf('day')}}, (err, allItems)=>{
+    if (err) {
+      console.log(err);
+    } else {
+      var total = 0;
+      allItems.forEach((item)=>{
+        total = total + item.calories;
+      });
+      Limit.find({}, (err, allLimit)=>{
+        allLimit.forEach((item)=>{
+        limit = item.limit;
+      console.log('New limit: '+ limit);
+        })
+      })
+      res.render('itemlist', {'itemlist': allItems, total, limit, limitId});
+    }
+  });
 });
 
 app.get('/item', (req, res)=> {

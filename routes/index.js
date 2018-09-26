@@ -5,8 +5,8 @@ const moment = require('moment');
 const metOvrr = require("method-override");
 const url = 'mongodb://localhost:27017/calorie_tracker';
 const firebase = require('firebase');
-//import {firebaseRun} from "../api";
 const firebaseRun = require('../api');
+const auth = firebase.auth();
 
 mongoose.connect(url);
 app.use(metOvrr("_method"));
@@ -39,33 +39,34 @@ app.get('/', (req, res)=> {
 app.post('/', (req, res)=>{
   const email  = req.body.email;
   const password = req.body.password;
-  const auth = firebase.auth();
-  const promise = auth.createUserWithEmailAndPassword(email, password);
+  const promise = auth.signInWithEmailAndPassword(email, password);
   promise.catch(e => console.log(e.message));
   firebase.auth().onAuthStateChanged(firebaseUser => {
     if (firebaseUser){
-      console.log(firebaseUser);
+      console.log(firebaseUser.uid);
+      var userId = firebaseUser.uid;
+      Item.find({date: {"$gte": moment().startOf('day'), "$lt": moment().endOf('day')}}, (err, allItems)=>{
+        if (err) {
+          console.log(err);
+        } else {
+          var total = 0;
+          allItems.forEach((item)=>{
+            total = total + item.calories;
+          });
+          Limit.find({}, (err, allLimit)=>{
+            allLimit.forEach((item)=>{
+            limit = item.limit;
+          console.log('New limit: '+ limit);
+            })
+          })
+          res.render('itemlist', {'itemlist': allItems, total, limit, limitId, userId});
+        }
+      });
     } else {
       console.log('not log in');
     }
   })
-  Item.find({date: {"$gte": moment().startOf('day'), "$lt": moment().endOf('day')}}, (err, allItems)=>{
-    if (err) {
-      console.log(err);
-    } else {
-      var total = 0;
-      allItems.forEach((item)=>{
-        total = total + item.calories;
-      });
-      Limit.find({}, (err, allLimit)=>{
-        allLimit.forEach((item)=>{
-        limit = item.limit;
-      console.log('New limit: '+ limit);
-        })
-      })
-      res.render('itemlist', {'itemlist': allItems, total, limit, limitId});
-    }
-  });
+
 });
 
 app.get('/item', (req, res)=> {

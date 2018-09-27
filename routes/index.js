@@ -44,7 +44,6 @@ app.post('/', (req, res)=>{
   firebase.auth().onAuthStateChanged(firebaseUser => {
     if (firebaseUser){
       console.log(firebaseUser.uid);
-      var userId = firebaseUser.uid;
       Item.find({date: {"$gte": moment().startOf('day'), "$lt": moment().endOf('day')}}, (err, allItems)=>{
         if (err) {
           console.log(err);
@@ -59,6 +58,8 @@ app.post('/', (req, res)=>{
           console.log('New limit: '+ limit);
             })
           })
+          var userId = firebaseUser.uid;
+          console.log(userId);
           res.render('itemlist', {'itemlist': allItems, total, limit, limitId, userId});
         }
       });

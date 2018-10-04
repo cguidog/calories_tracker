@@ -7,10 +7,12 @@ const url = 'mongodb://localhost:27017/calorie_tracker';
 const firebase = require('firebase');
 const firebaseRun = require('../api');
 const auth = firebase.auth();
+var userId = '';
 
 mongoose.connect(url);
 app.use(metOvrr("_method"));
 const itemSchema = new mongoose.Schema({
+  user: String,
   item: String,
   calories: Number,
   quantity: Number,
@@ -42,9 +44,10 @@ app.post('/', (req, res)=>{
   const promise = auth.signInWithEmailAndPassword(email, password);
   promise.catch(e => console.log(e.message));
   firebase.auth().onAuthStateChanged(firebaseUser => {
+    userId = firebaseUser.uid;
     if (firebaseUser){
       console.log(firebaseUser.uid);
-      Item.find({date: {"$gte": moment().startOf('day'), "$lt": moment().endOf('day')}}, (err, allItems)=>{
+      Item.find({date: {"$gte": moment().startOf('day'), "$lt": moment().endOf('day')}, user: userId}, (err, allItems)=>{
         if (err) {
           console.log(err);
         } else {
@@ -58,7 +61,6 @@ app.post('/', (req, res)=>{
           console.log('New limit: '+ limit);
             })
           })
-          var userId = firebaseUser.uid;
           console.log(userId);
           res.render('itemlist', {'itemlist': allItems, total, limit, limitId, userId});
         }
@@ -71,7 +73,7 @@ app.post('/', (req, res)=>{
 });
 
 app.get('/item', (req, res)=> {
-  Item.find({date: {"$gte": moment().startOf('day'), "$lt": moment().endOf('day')}}, (err, allItems)=>{
+  Item.find({date: {"$gte": moment().startOf('day'), "$lt": moment().endOf('day')},user: userId}, (err, allItems)=>{
     if (err) {
       console.log(err);
     } else {
@@ -91,6 +93,7 @@ app.get('/item', (req, res)=> {
 });
 app.post('/item', (req, res)=> {
 Item.create({item: req.body.input.toUpperCase(),
+            user: userId,
             calories: req.body.calories,
             quantity: req.body.quantity,
             unit: req.body.unit,

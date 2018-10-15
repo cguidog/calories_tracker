@@ -47,13 +47,16 @@ app.get('/', (req, res)=> {
 app.post('/', (req, res)=>{
   const email  = req.body.email;
   const password = req.body.password;
-  const promise = auth.createUserWithEmailAndPassword(email, password);
+  const promise = auth.signInWithEmailAndPassword(email, password);
   promise.catch(e => console.log(e.message));
   firebase.auth().onAuthStateChanged(firebaseUser => {
     if (firebaseUser){
-      console.log(firebaseUser.uid);
-      User.create({user: firebaseUser.email, userId: firebaseUser.uid});
-      Item.find({date: {"$gte": moment().startOf('day'), "$lt": moment().endOf('day')}, user: firebaseUser.email}, (err, allItems)=>{
+      //console.log(firebaseUser.uid);
+      //var userId = ''
+      User.find({userId: firebaseUser.uid}, (err, user)=>{
+        console.log(user[0].userId);
+      });
+      Item.find({date: {"$gte": moment().startOf('day'), "$lt": moment().endOf('day')}, user: firebaseUser.uid}, (err, allItems)=>{
         if (err) {
           console.log(err);
         } else {
@@ -89,7 +92,7 @@ app.post('/register', (req, res)=>{
   promise.catch(e => console.log(e.message));
   firebase.auth().onAuthStateChanged(firebaseUser => {
     if (firebaseUser){
-      console.log(firebaseUser.uid);
+      //console.log(firebaseUser.uid);
       User.create({user: firebaseUser.email, userId: firebaseUser.uid});
       Item.find({date: {"$gte": moment().startOf('day'), "$lt": moment().endOf('day')}, user: firebaseUser.email}, (err, allItems)=>{
         if (err) {
@@ -116,7 +119,6 @@ app.post('/register', (req, res)=>{
   })
 });
 app.get('/item', (req, res)=> {
-  var userId = ''
   Item.find({date: {"$gte": moment().startOf('day'), "$lt": moment().endOf('day')},user: userId}, (err, allItems)=>{
     if (err) {
       console.log(err);
@@ -136,7 +138,7 @@ app.get('/item', (req, res)=> {
   });
 });
 app.post('/item', (req, res)=> {
-
+User.find()
 Item.create({item: req.body.input.toUpperCase(),
             user: userId,
             calories: req.body.calories,

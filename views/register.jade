@@ -22,11 +22,10 @@ html(lang="en")
       firebase.initializeApp(config);
 
 block content
-    p Login
-    form(action="/" method="POST")
+    p Register
+    form(action="/register" method="POST")
         input(name='email' type="email" placeholder="Email")
         input(name='password' type="password" placeholder="Password")
-        button(type="submit") Login
-    p Not an User?
-      a(href='/register') Register
-    
+        button(type="submit") Submit
+    p Already resgistered?
+      a(href='/') Log In

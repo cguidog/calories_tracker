@@ -38,7 +38,8 @@ var limit = Limit.find({}, (err, allLimit)=>{
   limit = item.limit;
   limitId= item.id;
   })
-})
+});
+var userId = '';
 /* GET home page. */
 app.get('/', (req, res)=> {
   res.render('index');
@@ -51,10 +52,8 @@ app.post('/', (req, res)=>{
   promise.catch(e => console.log(e.message));
   firebase.auth().onAuthStateChanged(firebaseUser => {
     if (firebaseUser){
-      //console.log(firebaseUser.uid);
-      //var userId = ''
       User.find({userId: firebaseUser.uid}, (err, user)=>{
-        console.log(user[0].userId);
+        userId = user[0].userId;
       });
       Item.find({date: {"$gte": moment().startOf('day'), "$lt": moment().endOf('day')}, user: firebaseUser.uid}, (err, allItems)=>{
         if (err) {
@@ -70,13 +69,11 @@ app.post('/', (req, res)=>{
           console.log('New limit: '+ limit);
             })
           })
-          //console.log(userId);
           res.render('itemlist', {'itemlist': allItems, total, limit, limitId});
         }
       });
-    }
-   else {
-      console.log('not log in');
+    } else {
+       console.log('not log in');
     }
   })
 });

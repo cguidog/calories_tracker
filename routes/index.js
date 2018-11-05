@@ -147,7 +147,7 @@ Item.create({item: req.body.input.toUpperCase(),
     console.log('Error:' + err);
     res.redirect('/item');
   } else {
-    res.redirect('/');
+    res.redirect('/item');
   }
 });
 });
@@ -222,7 +222,7 @@ app.put('/limit', (req, res)=>{
         res.redirect('/limit');
       } else {
         limit = req.body.limit;
-        res.redirect('/');
+        res.redirect('/item');
       }
     });
 });
